@@ -1,0 +1,23 @@
+#version 330 core
+
+// Input vertex data, different for all executions of this shader.
+layout(location = 0) in vec3 position;
+
+uniform float shaderVariable;
+
+vec3 positionNew = position;
+
+void main(){
+
+vec3 positionNew = position;
+if (position.y < 0 && position.x < 0) {
+	positionNew.x -= shaderVariable;
+}
+
+if (position.y < 0 && position.x > 0) {
+	positionNew.x += shaderVariable;
+}
+
+gl_Position = vec4 (positionNew, 1.0);
+
+}
