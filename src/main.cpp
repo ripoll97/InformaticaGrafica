@@ -7,11 +7,19 @@
 #include "../Shader.h"
 #include "src\SOIL.h"
 
+#include <glm.hpp>
+#include <gtc\matrix_transform.hpp>
+#include <gtc\type_ptr.hpp>
+
+
 using namespace std;
+using namespace glm;
+
 const GLint WIDTH = 800, HEIGHT = 600;
 bool WIDEFRAME = false;
 int Numbuffer = 1;
 float fadeValue = 0;
+int rotationValue;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	//cuando se pulsa una tecla escape cerramos la aplicacion
@@ -29,6 +37,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_DOWN) {
 		if (fadeValue > 0)
 			fadeValue -= 0.1;
+	}
+	if (key == GLFW_KEY_LEFT) {
+		rotationValue = (rotationValue + 3) % 360;
+		cout << rotationValue << endl;
+	}
+	if (key == GLFW_KEY_RIGHT) {
+		rotationValue = (rotationValue - 3) % 360;
+		cout << rotationValue << endl;
 	}
 }
 
@@ -110,8 +126,6 @@ int main() {
 		//Declarar el VBO y el EBO
 
 
-
-
 	
 		//Enlazar el buffer con openGL
 	glBindVertexArray(VAO);
@@ -172,10 +186,21 @@ int main() {
 	
 	GLint variableShader = glGetUniformLocation(shdr.Program, "shaderVariable");
 	GLfloat variableFade = glGetUniformLocation(shdr.Program, "fade");
+	GLint finalTrans = glGetUniformLocation(shdr.Program, "transformationMatrix");
 
 	//bucle de dibujado
 	while (!glfwWindowShouldClose(window)) 
 	{
+
+		mat4 transformationMatrix, escalationMatrix, translationMatrix1, translationMatrix2, rotationMatrix;
+
+		// Definir las matrices de transformacion
+		escalationMatrix = scale(escalationMatrix, vec3(0.5f, 0.5f, 0.0f));
+		translationMatrix1 = translate(translationMatrix1, vec3(0.5f, 0.5f, 0.0f));
+		//translationMatrix2 = translate(translationMatrix2, vec3(0.5f, 0.0f, 0.0f));
+		rotationMatrix = rotate(rotationMatrix, radians(float(rotationValue)), vec3(0.0f, 0.0f, 1.0f));
+		transformationMatrix = translationMatrix1 * rotationMatrix * escalationMatrix;
+
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwSetKeyCallback(window, key_callback);
 		//Establecer el color de fondo
@@ -202,26 +227,14 @@ int main() {
 		}
 		//pintar con triangulos
 		if (!WIDEFRAME) {
-			//cout << "Mel" << endl;
-			//glColor3f(0.0, 1.0, 0.0);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
-		//shdr.USE();
-		//glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_2D, texture);
-		//
-		//glUniform1i(glGetUniformLocation(shdr.Program, "Texture1"), 0);
 
-		//glBindVertexArray(VAO);
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glUniformMatrix4fv(finalTrans, 1, GL_FALSE, value_ptr(transformationMatrix));
+
 		glBindVertexArray(0);
-
-
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		//glBindVertexArray(VAO);
-		//glDrawArrays(GL_TRIANGLES, 0, 4);
-		
+				
 		glBindVertexArray(0);
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
