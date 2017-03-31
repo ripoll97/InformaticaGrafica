@@ -26,6 +26,8 @@
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\CubeFragmentShader.fragmentshader" />
+    <None Include="src\CubeVertexShader.vertexshader" />
     <None Include="src\SimpleFragmentShader.fragmentshader" />
     <None Include="src\SimpleVertexShader.vertexshader" />
     <None Include="src\TextureFragment.fragmentshader" />
