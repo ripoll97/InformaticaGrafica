@@ -19,7 +19,8 @@ const GLint WIDTH = 800, HEIGHT = 600;
 bool WIDEFRAME = false;
 int Numbuffer = 1;
 float fadeValue = 0;
-int rotationValue = 50;
+int rotationValue = 0;
+int rotationValueY = 0;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	//cuando se pulsa una tecla escape cerramos la aplicacion
@@ -30,21 +31,25 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_W && action == GLFW_PRESS) {
 		WIDEFRAME = !WIDEFRAME;
 	}
-	if (key == GLFW_KEY_UP) {
+	if (key == GLFW_KEY_1) {
 		if (fadeValue < 1)
 			fadeValue += 0.1;
 	}
-	if (key == GLFW_KEY_DOWN) {
+	if (key == GLFW_KEY_2) {
 		if (fadeValue > 0)
 			fadeValue -= 0.1;
 	}
 	if (key == GLFW_KEY_LEFT) {
 		rotationValue = (rotationValue + 3) % 360;
-		cout << rotationValue << endl;
 	}
 	if (key == GLFW_KEY_RIGHT) {
 		rotationValue = (rotationValue - 3) % 360;
-		cout << rotationValue << endl;
+	}
+	if (key == GLFW_KEY_UP) {
+		rotationValueY = (rotationValueY + 3) % 360;
+	}
+	if (key == GLFW_KEY_DOWN) {
+		rotationValueY = (rotationValueY - 3) % 360;
 	}
 }
 
@@ -187,20 +192,30 @@ int main() {
 
 	//Enlazar el buffer con openGL
 	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexBufferObject), VertexBufferObject, GL_STATIC_DRAW);
+	/*glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexBufferObject), VertexBufferObject, GL_STATIC_DRAW);*/
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(IndexBufferObject), IndexBufferObject, GL_STATIC_DRAW);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexBufferCube), VertexBufferCube, GL_STATIC_DRAW);
+
+	//glBindTexture(GL_TEXTURE_2D, 0);
 	//Establecer las propiedades de los vertices
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (GLvoid*)0);
+	/*glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (GLvoid*)0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (GLvoid*)(3 * sizeof(GL_FLOAT)));
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (GLvoid*)(6 * sizeof(GL_FLOAT)));
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);*/
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (GLvoid*)0);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (GLvoid*)(3 * sizeof(GL_FLOAT)));
+	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(2);
+
+
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -223,7 +238,7 @@ int main() {
 	// Texture 2
 
 	GLuint texture2;
-	glGenTextures(2, &texture2);
+	glGenTextures(1, &texture2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
@@ -231,10 +246,9 @@ int main() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	int width2, height2;
-	unsigned char* image2 = SOIL_load_image("./src/InBread.png", &width2, &height2, 0, SOIL_LOAD_RGB);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width2, height2, 0, GL_RGB, GL_UNSIGNED_BYTE, image2);
-	SOIL_free_image_data(image2);
+	image = SOIL_load_image("./src/InBread.png", &width, &height, 0, SOIL_LOAD_RGB);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
 
 
 	//liberar el buffer
@@ -259,8 +273,10 @@ int main() {
 		// Definir las matrices de transformacion
 		//escalationMatrix = scale(escalationMatrix, vec3(0.5f, 0.5f, 0.0f));
 		translationMatrix1 = translate(translationMatrix1, vec3(0.0f, -0.5f, 0.0f));
+		
 		rotationMatrix = rotate(rotationMatrix, radians(float(rotationValue)), vec3(1.0f, 0.0f, 0.0f));
-
+		rotationMatrix = rotate(rotationMatrix, radians(float(rotationValueY)), vec3(0.0f, 1.0f, 0.0f));
+		
 		model = translationMatrix1 * rotationMatrix * model;
 
 		translationMatrix2 = translate(translationMatrix2, vec3(0.0, 0.0f, -0.3f));
@@ -271,7 +287,7 @@ int main() {
 		view = lookAt(
 			vec3(1.2f, 1.2f, 1.2f),
 			vec3(0.0f, 0.0f, 0.0f),
-			vec3(0.0f, 0.0f, 1.0f)
+			vec3(0.0f, 0.0f, 0.3f)
 		);
 
 		proj = perspective(radians(60.0f), 800.0f / 600.0f, 1.0f, -10.0f);
@@ -302,8 +318,11 @@ int main() {
 		}
 		//pintar con triangulos
 		if (!WIDEFRAME) {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
 		glUniformMatrix4fv(uniModel, 1, GL_FALSE, value_ptr(model));

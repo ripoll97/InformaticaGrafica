@@ -10,6 +10,7 @@ uniform float fade;
 
 void main(){
     outColor = mix(texture(Texture1, Texcoord), texture(Texture2, Texcoord), fade);
+	//outColor = vec4(1.0, 0.0, 0.0, 1.0);
 }
 
 
