@@ -21,6 +21,8 @@ int Numbuffer = 1;
 float fadeValue = 0;
 int rotationValue = 0;
 int rotationValueY = 0;
+int automaticRotation;
+
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	//cuando se pulsa una tecla escape cerramos la aplicacion
@@ -53,12 +55,18 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
+void createLookAt(vec3 cameraPos, vec3 directionPoint) {
+	vec3 directionVec, upVec, rightVec;
+	vec3 upWorld = { 0,1,0 };
+	mat4 lookAtMat;
+	directionVec = directionPoint - cameraPos;
+	upVec = cross(directionVec, upWorld);
+	
+}
 
 int main() {
 	//initGLFW
 	//TODO
-
-
 	GLFWwindow* window;
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
@@ -166,9 +174,9 @@ int main() {
 
 	vec3 CubesPositionBuffer[] = {
 		vec3(0.0f ,  0.0f,  0.0f),
-		vec3(2.0f ,  5.0f, -15.0f),
-		vec3(-1.5f, -2.2f, -2.5f),
-		vec3(-3.8f, -2.0f, -12.3f),
+		vec3(2.0f ,  3.0f,  0.5f),
+		vec3(-1.5f, -2.2f,  0.5f),
+		vec3(-3.8f, -2.0f, -1.3f),
 		vec3(2.4f , -0.4f, -3.5f),
 		vec3(-1.7f,  3.0f, -7.5f),
 		vec3(1.3f , -2.0f, -2.5f),
@@ -192,6 +200,7 @@ int main() {
 
 	//Enlazar el buffer con openGL
 	glBindVertexArray(VAO);
+	
 	/*glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexBufferObject), VertexBufferObject, GL_STATIC_DRAW);*/
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -260,7 +269,7 @@ int main() {
 
 	GLint variableShader = glGetUniformLocation(shdr.Program, "shaderVariable");
 	GLfloat variableFade = glGetUniformLocation(shdr.Program, "fade");
-	GLint uniModel = glGetUniformLocation(shdr.Program, "model");
+	//GLint uniModel = glGetUniformLocation(shdr.Program, "model");
 	GLint uniView = glGetUniformLocation(shdr.Program, "view");
 	GLint uniProj = glGetUniformLocation(shdr.Program, "proj");
 
@@ -268,29 +277,29 @@ int main() {
 	while (!glfwWindowShouldClose(window))
 	{
 
-		mat4 transformationMatrix, escalationMatrix, translationMatrix1, translationMatrix2, rotationMatrix, model, view, proj;
+		mat4 transformationMatrix, escalationMatrix, translationMatrix2, view, proj;
 
 		// Definir las matrices de transformacion
 		//escalationMatrix = scale(escalationMatrix, vec3(0.5f, 0.5f, 0.0f));
-		translationMatrix1 = translate(translationMatrix1, vec3(0.0f, -0.5f, 0.0f));
+		/*translationMatrix1 = translate(translationMatrix1, vec3(0.0f, -0.5f, 0.0f));
 		
 		rotationMatrix = rotate(rotationMatrix, radians(float(rotationValue)), vec3(1.0f, 0.0f, 0.0f));
 		rotationMatrix = rotate(rotationMatrix, radians(float(rotationValueY)), vec3(0.0f, 1.0f, 0.0f));
 		
 		model = translationMatrix1 * rotationMatrix * model;
 
-		translationMatrix2 = translate(translationMatrix2, vec3(0.0, 0.0f, -0.3f));
+		translationMatrix2 = translate(translationMatrix2, vec3(0.0, 0.0f, -0.3f));*/
 		// No funciona
 		//view = translationMatrix2 * view;
 
 		// lookAt sacado de Open.gl
 		view = lookAt(
-			vec3(1.2f, 1.2f, 1.2f),
-			vec3(0.0f, 0.0f, 0.0f),
-			vec3(0.0f, 0.0f, 0.3f)
+			vec3(8.0f, 1.0f, 2.0f),
+			vec3(4.5f, 0.7f, 0.0f),
+			vec3(0.0f, 1.0f, 0.0f)
 		);
 
-		proj = perspective(radians(60.0f), 800.0f / 600.0f, 1.0f, -10.0f);
+		proj = perspective(radians(60.0f), 800.0f / 600.0f, 0.1f, 100.f);
 
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwSetKeyCallback(window, key_callback);
@@ -310,22 +319,44 @@ int main() {
 		//glUniform1f(variableShader, 0.4 * abs(sin(glfwGetTime())));
 		glUniform1f(variableFade, fadeValue);
 		//pitar el VAO
-		glBindVertexArray(VAO);
+		glBindVertexArray(VAO); 
+		automaticRotation = glfwGetTime() * 50;
+			for (int i = 0; i < 10; i++) {
+				mat4 translationMatrix1, rotationMatrix;
+				if (i == 0) {
+					rotationMatrix = rotate(rotationMatrix, radians(float(rotationValue)), vec3(1.0f, 0.0f, 0.0f));
+					rotationMatrix = rotate(rotationMatrix, radians(float(rotationValueY)), vec3(0.0f, 1.0f, 0.0f));
+
+				}
+
+				else {
+					rotationMatrix = rotate(rotationMatrix, radians(float(automaticRotation)), vec3(1.0f, 0.0f, 0.0f));
+					rotationMatrix = rotate(rotationMatrix, radians(float(automaticRotation * 0.5)), vec3(0.0f, 1.0f, 0.0f));
+				}
+
+				translationMatrix1 = translate(translationMatrix1, CubesPositionBuffer[i]);
+				mat4 model = translationMatrix1 * rotationMatrix;
+
+				glUniformMatrix4fv(glGetUniformLocation(shdr.Program, "model"), 1, GL_FALSE, value_ptr(model));
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				glDrawArrays(GL_TRIANGLES, 0, 36);
+			}
+		
 		//pintar con lineas
-		if (WIDEFRAME) {
+		/*if (WIDEFRAME) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
 		//pintar con triangulos
 		if (!WIDEFRAME) {
-			//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-			//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
+		}*/
 
-		glUniformMatrix4fv(uniModel, 1, GL_FALSE, value_ptr(model));
+		//glUniformMatrix4fv(uniModel, 1, GL_FALSE, value_ptr(model));
 		glUniformMatrix4fv(uniView, 1, GL_FALSE, value_ptr(view));
 		glUniformMatrix4fv(uniProj, 1, GL_FALSE, value_ptr(proj));
 
