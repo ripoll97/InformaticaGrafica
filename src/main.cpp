@@ -54,15 +54,45 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		rotationValueY = (rotationValueY - 3) % 360;
 	}
 }
+mat4 createLookAt(vec3 cameraPos, vec3 directionPoint) {
+	vec3 directionVec, upVec, rightVec;
+	vec3 upWorld = { 0,1,0 };
+	
+	directionVec = normalize(directionPoint - cameraPos);
+	rightVec = normalize(cross(directionVec, upWorld));
+	upVec = cross(directionVec, rightVec);
+	
+	mat4 lookAtMat(
+		rightVec.x, upVec.x, -directionVec.x, 0,
+		rightVec.y, upVec.y, -directionVec.y, 0,
+		rightVec.z, upVec.z, -directionVec.z, 0,
+		0, 0, 0, 1
+	);
 
-void createLookAt(vec3 cameraPos, vec3 directionPoint) {
+	mat4 positionMat(
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		-(cameraPos.x), -(cameraPos.y), -(cameraPos.z), 1
+	);
+
+	return lookAtMat * positionMat;
+}
+
+/*mat4 createLookAt2() {
 	vec3 directionVec, upVec, rightVec;
 	vec3 upWorld = { 0,1,0 };
 	mat4 lookAtMat;
-	directionVec = directionPoint - cameraPos;
-	upVec = cross(directionVec, upWorld);
-	
-}
+	directionVec = {0.0, 1.0, 0.0};
+	rightVec = { 8.0, 1.0, 2.0 };
+	upVec = {4.5, 0.7, 0.0};
+	return lookAtMat = {
+		rightVec.x, rightVec.y, rightVec.z, 0,
+		upVec.x, upVec.y, upVec.z, 0,
+		directionVec.x, directionVec.y, directionVec.z, 0,
+		0, 0, 0, 1
+	};
+}*/
 
 int main() {
 	//initGLFW
@@ -293,12 +323,12 @@ int main() {
 		//view = translationMatrix2 * view;
 
 		// lookAt sacado de Open.gl
-		view = lookAt(
+		/*view = lookAt(
 			vec3(8.0f, 1.0f, 2.0f),
 			vec3(4.5f, 0.7f, 0.0f),
 			vec3(0.0f, 1.0f, 0.0f)
-		);
-
+		);*/
+		view = createLookAt(vec3(0.0, 0.0, 3), vec3(0.0, 0.0, 0.0));
 		proj = perspective(radians(60.0f), 800.0f / 600.0f, 0.1f, 100.f);
 
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
