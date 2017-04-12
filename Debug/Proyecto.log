@@ -1,9 +1,12 @@
 ﻿  main.cpp
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(38): warning C4305: '+=': truncamiento de 'double' a 'float'
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(42): warning C4305: '-=': truncamiento de 'double' a 'float'
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(136): warning C4305: 'argumento': truncamiento de 'double' a 'GLclampf'
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(301): warning C4244: 'inicializando': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(350): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(353): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(40): warning C4305: '+=': truncamiento de 'double' a 'float'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(44): warning C4305: '-=': truncamiento de 'double' a 'float'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(145): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(146): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(188): warning C4305: 'argumento': truncamiento de 'double' a 'GLclampf'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(353): warning C4244: 'inicializando': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(362): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(410): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(413): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
   Proyecto.vcxproj -> C:\Users\Miquel\Documents\GitHub\InformaticaGrafica\Debug\Practica1.exe
   Proyecto.vcxproj -> C:\Users\Miquel\Documents\GitHub\InformaticaGrafica\Debug\Practica1.pdb (Full PDB)

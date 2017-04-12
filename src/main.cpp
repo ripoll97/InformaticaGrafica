@@ -11,6 +11,7 @@
 #include <gtc\matrix_transform.hpp>
 #include <gtc\type_ptr.hpp>
 
+#include <time.h>
 
 using namespace std;
 using namespace glm;
@@ -22,7 +23,8 @@ float fadeValue = 0;
 int rotationValue = 0;
 int rotationValueY = 0;
 int automaticRotation;
-
+vec3 cameraPosition(0.0, 0.0, 3);
+float cameraVelocity = 13.0f;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	//cuando se pulsa una tecla escape cerramos la aplicacion
@@ -53,10 +55,52 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_DOWN) {
 		rotationValueY = (rotationValueY - 3) % 360;
 	}
+	/*if (key == GLFW_KEY_W) {
+		cameraPosition.z -= dt * cameraVelocity;
+	}
+	if (key == GLFW_KEY_S) {
+		cameraPosition.z += dt * cameraVelocity;
+	}
+	if (key == GLFW_KEY_A) {
+		cameraPosition.x -= dt * cameraVelocity;
+	}
+	if (key == GLFW_KEY_D) {
+		cameraPosition.x += dt * cameraVelocity;
+	}*/
 }
-mat4 createLookAt(vec3 cameraPos, vec3 directionPoint) {
+
+void DoMovement(GLFWwindow* window, float dt) {
+	
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		cameraPosition.z -= dt * cameraVelocity;
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		cameraPosition.z += dt * cameraVelocity;
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		cameraPosition.x -= dt * cameraVelocity;
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		cameraPosition.x += dt * cameraVelocity;
+	}
+
+}
+
+void glfWSetInputMode(GLFWwindow* window, int mode, int value) {
+
+}
+
+void CursorPosition(GLFWwindow* window, double xpos, double ypos) {
+
+}
+
+void ScrollValues(GLFWwindow* window, double xoffset, double yoffset) {
+	cout << yoffset << endl;
+}
+
+mat4 createLookAt(vec3 cameraPos, vec3 directionPoint, vec3 upWorldVector) {
 	vec3 directionVec, upVec, rightVec;
-	vec3 upWorld = { 0,1,0 };
+	vec3 upWorld = upWorldVector;
 	
 	directionVec = normalize(directionPoint - cameraPos);
 	rightVec = normalize(cross(directionVec, upWorld));
@@ -96,6 +140,11 @@ mat4 createLookAt(vec3 cameraPos, vec3 directionPoint) {
 
 int main() {
 	//initGLFW
+
+	// Time Variables //
+	float oldTime = glfwGetTime();
+	float time = glfwGetTime();
+	float dt = time - oldTime;
 	//TODO
 	GLFWwindow* window;
 	if (!glfwInit())
@@ -126,7 +175,10 @@ int main() {
 	}
 	//set function when callback
 	//TODO
-	glfwSetKeyCallback(window, key_callback);
+	//glfwSetKeyCallback(window, DoMovement);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	glfwSetCursorPosCallback(window, CursorPosition);
+	glfwSetScrollCallback(window, ScrollValues);
 	//set windows and viewport
 	//TODO
 	int screenWithd, screenHeight;
@@ -307,7 +359,15 @@ int main() {
 	while (!glfwWindowShouldClose(window))
 	{
 
+		time = glfwGetTime();
+		dt = time - oldTime;
+
+		DoMovement(window, dt);
+
 		mat4 transformationMatrix, escalationMatrix, translationMatrix2, view, proj;
+		
+
+		//cout << time  << "		" << oldTime << "		" << dt << endl;
 
 		// Definir las matrices de transformacion
 		//escalationMatrix = scale(escalationMatrix, vec3(0.5f, 0.5f, 0.0f));
@@ -328,7 +388,7 @@ int main() {
 			vec3(4.5f, 0.7f, 0.0f),
 			vec3(0.0f, 1.0f, 0.0f)
 		);*/
-		view = createLookAt(vec3(0.0, 0.0, 3), vec3(0.0, 0.0, 0.0));
+		view = createLookAt(cameraPosition, vec3(0.0, 0.0, 0.0), vec3(0.0, 1, 0.0));
 		proj = perspective(radians(60.0f), 800.0f / 600.0f, 0.1f, 100.f);
 
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
@@ -395,6 +455,9 @@ int main() {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		oldTime = time;
+
 	}
 	// liberar la memoria de los VAO, EBO y VBO
 	glDeleteVertexArrays(1, &VAO);
