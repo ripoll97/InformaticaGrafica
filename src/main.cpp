@@ -23,8 +23,12 @@ float fadeValue = 0;
 int rotationValue = 0;
 int rotationValueY = 0;
 int automaticRotation;
+
 vec3 cameraPosition(0.0, 0.0, 3);
+vec3 cameraDirectionPoint;
 float cameraVelocity = 13.0f;
+
+float pitchVal, yawVal;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	//cuando se pulsa una tecla escape cerramos la aplicacion
@@ -73,15 +77,21 @@ void DoMovement(GLFWwindow* window, float dt) {
 	
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		cameraPosition.z -= dt * cameraVelocity;
+		cameraDirectionPoint.z -= dt * cameraVelocity;
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 		cameraPosition.z += dt * cameraVelocity;
+		cameraDirectionPoint.z += dt * cameraVelocity;
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 		cameraPosition.x -= dt * cameraVelocity;
+		cameraDirectionPoint.x -= dt * cameraVelocity;
+
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 		cameraPosition.x += dt * cameraVelocity;
+		cameraDirectionPoint.x += dt * cameraVelocity;
+
 	}
 
 }
@@ -91,7 +101,8 @@ void glfWSetInputMode(GLFWwindow* window, int mode, int value) {
 }
 
 void CursorPosition(GLFWwindow* window, double xpos, double ypos) {
-
+	pitchVal = ypos / 1000;
+	yawVal = xpos / 1000;
 }
 
 void ScrollValues(GLFWwindow* window, double xoffset, double yoffset) {
@@ -103,7 +114,12 @@ mat4 createLookAt(vec3 cameraPos, vec3 directionPoint, vec3 upWorldVector) {
 	vec3 upWorld = upWorldVector;
 	
 	directionVec = normalize(directionPoint - cameraPos);
-	rightVec = normalize(cross(directionVec, upWorld));
+
+	directionVec.x = cos(yawVal * sin(pitchVal));
+	directionVec.y = sin(pitchVal);
+	directionVec.z = sin(yawVal * cos(pitchVal));
+	
+		rightVec = normalize(cross(directionVec, upWorld));
 	upVec = cross(directionVec, rightVec);
 	
 	mat4 lookAtMat(
@@ -388,7 +404,7 @@ int main() {
 			vec3(4.5f, 0.7f, 0.0f),
 			vec3(0.0f, 1.0f, 0.0f)
 		);*/
-		view = createLookAt(cameraPosition, vec3(0.0, 0.0, 0.0), vec3(0.0, 1, 0.0));
+		view = createLookAt(cameraPosition, cameraDirectionPoint, vec3(0.0, 1, 0.0));
 		proj = perspective(radians(60.0f), 800.0f / 600.0f, 0.1f, 100.f);
 
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
