@@ -13,6 +13,8 @@
 
 #include <time.h>
 
+#include "../Camera.h"
+
 using namespace std;
 using namespace glm;
 
@@ -28,7 +30,16 @@ vec3 cameraPosition(0.0, 0.0, 3);
 vec3 cameraDirectionPoint;
 float cameraVelocity = 13.0f;
 
+float offsetX = 0;
+float offsetY = 0;
 float pitchVal, yawVal;
+float lastPosX = WIDTH / 2;
+float lastPosY = HEIGHT / 2;
+double posX = WIDTH / 2;
+double posY = HEIGHT / 2;
+
+Camera camara(cameraPosition, cameraDirectionPoint, 1, 60);
+
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	//cuando se pulsa una tecla escape cerramos la aplicacion
@@ -91,22 +102,26 @@ void DoMovement(GLFWwindow* window, float dt) {
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 		cameraPosition.x += dt * cameraVelocity;
 		cameraDirectionPoint.x += dt * cameraVelocity;
-
 	}
-
 }
 
 void glfWSetInputMode(GLFWwindow* window, int mode, int value) {
 
 }
 
-void CursorPosition(GLFWwindow* window, double xpos, double ypos) {
-	pitchVal = ypos / 1000;
-	yawVal = xpos / 1000;
+static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
+	camara.MouseMove(window, xpos, ypos);
+}
+
+void DoRotation() {
+	cameraDirectionPoint.x = cos(radians(yawVal)) * cos(radians(pitchVal));
+	cameraDirectionPoint.y = sin(radians(pitchVal));
+	cameraDirectionPoint.z = sin(radians(yawVal)) * cos(radians(pitchVal));
+
 }
 
 void ScrollValues(GLFWwindow* window, double xoffset, double yoffset) {
-	cout << yoffset << endl;
+	camara.MouseScroll(window, xoffset, yoffset);
 }
 
 mat4 createLookAt(vec3 cameraPos, vec3 directionPoint, vec3 upWorldVector) {
@@ -115,11 +130,11 @@ mat4 createLookAt(vec3 cameraPos, vec3 directionPoint, vec3 upWorldVector) {
 	
 	directionVec = normalize(directionPoint - cameraPos);
 
-	directionVec.x = cos(yawVal * sin(pitchVal));
+	/*directionVec.x = cos(yawVal * sin(pitchVal));
 	directionVec.y = sin(pitchVal);
 	directionVec.z = sin(yawVal * cos(pitchVal));
-	
-		rightVec = normalize(cross(directionVec, upWorld));
+	*/
+	rightVec = normalize(cross(directionVec, upWorld));
 	upVec = cross(directionVec, rightVec);
 	
 	mat4 lookAtMat(
@@ -155,12 +170,11 @@ mat4 createLookAt(vec3 cameraPos, vec3 directionPoint, vec3 upWorldVector) {
 }*/
 
 int main() {
-	//initGLFW
-
-	// Time Variables //
+	//camara = Camera(cameraPosition, cameraDirectionPoint, 0'1, 60);
+	/*// Time Variables //
 	float oldTime = glfwGetTime();
 	float time = glfwGetTime();
-	float dt = time - oldTime;
+	float dt = time - oldTime;*/
 	//TODO
 	GLFWwindow* window;
 	if (!glfwInit())
@@ -191,10 +205,15 @@ int main() {
 	}
 	//set function when callback
 	//TODO
-	//glfwSetKeyCallback(window, DoMovement);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-	glfwSetCursorPosCallback(window, CursorPosition);
+	//glfwSetKeyCallback(window, camera.DoMovement);
+
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetCursorPosCallback(window, cursor_position_callback);
+	//glfwGetCursorPos(window, &posX, &posY);
 	glfwSetScrollCallback(window, ScrollValues);
+
+
+
 	//set windows and viewport
 	//TODO
 	int screenWithd, screenHeight;
@@ -374,14 +393,10 @@ int main() {
 	//bucle de dibujado
 	while (!glfwWindowShouldClose(window))
 	{
-
-		time = glfwGetTime();
-		dt = time - oldTime;
-
-		DoMovement(window, dt);
-
 		mat4 transformationMatrix, escalationMatrix, translationMatrix2, view, proj;
-		
+
+		camara.DoMovement(window);
+	
 
 		//cout << time  << "		" << oldTime << "		" << dt << endl;
 
@@ -395,17 +410,34 @@ int main() {
 		model = translationMatrix1 * rotationMatrix * model;
 
 		translationMatrix2 = translate(translationMatrix2, vec3(0.0, 0.0f, -0.3f));*/
-		// No funciona
-		//view = translationMatrix2 * view;
 
-		// lookAt sacado de Open.gl
-		/*view = lookAt(
-			vec3(8.0f, 1.0f, 2.0f),
-			vec3(4.5f, 0.7f, 0.0f),
-			vec3(0.0f, 1.0f, 0.0f)
-		);*/
-		view = createLookAt(cameraPosition, cameraDirectionPoint, vec3(0.0, 1, 0.0));
+		// PROVA --------------------------
+		/*	time = glfwGetTime();
+		DoMovement(window, dt);
+		dt = time - oldTime;
+		glfwGetCursorPos(window, &posX, &posY);
+
+		offsetX = posX - lastPosX;
+		offsetY = posY - lastPosY;
+		
+
+		yawVal += offsetX;
+		pitchVal += offsetY;
+
+		yawVal = mod(yawVal, 360.f);
+		pitchVal = clamp(pitchVal, -89.f, 89.f);
+
+		DoRotation();
+		cout << "Yaw: " << yawVal << "	Pitch: " << pitchVal << endl;
+		view = createLookAt(cameraPosition, cameraDirectionPoint, vec3(0.0, 1.0, .0));
 		proj = perspective(radians(60.0f), 800.0f / 600.0f, 0.1f, 100.f);
+
+		lastPosX = posX;
+		lastPosY = posY;*/
+		view = camara.LookAt();
+		//view = createLookAt(cameraPosition, cameraDirectionPoint, vec3(0.0, 1.0, .0));
+		proj = perspective(radians(60.0f), 800.0f / 600.0f, 0.1f, 100.f);
+
 
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwSetKeyCallback(window, key_callback);
@@ -472,8 +504,7 @@ int main() {
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		oldTime = time;
-
+		//oldTime = time;
 	}
 	// liberar la memoria de los VAO, EBO y VBO
 	glDeleteVertexArrays(1, &VAO);
