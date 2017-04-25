@@ -24,9 +24,9 @@ public:
 	mat4 LookAt();
 	GLfloat GetFOV();
 private:
-	vec3 cameraPos;
-	vec3 cameraFront;
-	vec3 cameraUp;
+	vec3 cameraPos = vec3(0.0f, 0.0f, 3.0f);
+	vec3 cameraFront = vec3(0.0f, 0.0f, -1.0f);
+	vec3 cameraUp = vec3(0.0f, 1.0f, 0.0f);
 	GLfloat dt;
 	GLfloat lastFrame;
 	GLfloat lastMx = 400;

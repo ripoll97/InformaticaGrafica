@@ -26,7 +26,7 @@ int rotationValue = 0;
 int rotationValueY = 0;
 int automaticRotation;
 
-vec3 cameraPosition(0.0, 0.0, 3);
+vec3 cameraPosition(0.0, 0.0, 5);
 vec3 cameraDirectionPoint;
 float cameraVelocity = 13.0f;
 
@@ -38,7 +38,7 @@ float lastPosY = HEIGHT / 2;
 double posX = WIDTH / 2;
 double posY = HEIGHT / 2;
 
-Camera camara(cameraPosition, cameraDirectionPoint, 1, 60);
+Camera camara(cameraPosition, cameraDirectionPoint, 0.04, 45.0f);
 
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
@@ -207,7 +207,7 @@ int main() {
 	//TODO
 	//glfwSetKeyCallback(window, camera.DoMovement);
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 	//glfwGetCursorPos(window, &posX, &posY);
 	glfwSetScrollCallback(window, ScrollValues);
@@ -436,7 +436,7 @@ int main() {
 		lastPosY = posY;*/
 		view = camara.LookAt();
 		//view = createLookAt(cameraPosition, cameraDirectionPoint, vec3(0.0, 1.0, .0));
-		proj = perspective(radians(60.0f), 800.0f / 600.0f, 0.1f, 100.f);
+		proj = perspective(camara.GetFOV(), 800.0f / 600.0f, 0.1f, 100.f);
 
 
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
