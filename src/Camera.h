@@ -7,7 +7,7 @@
 //GLFW
 #include <GLFW\glfw3.h>
 #include <iostream>
-#include "../Shader.h"
+#include "Shader.h"
 #include "src\SOIL.h"
 
 #include <time.h>

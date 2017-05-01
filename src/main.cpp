@@ -4,7 +4,7 @@
 //GLFW
 #include <GLFW\glfw3.h>
 #include <iostream>
-#include "../Shader.h"
+#include "Shader.h"
 #include "src\SOIL.h"
 
 #include <glm.hpp>
@@ -13,7 +13,9 @@
 
 #include <time.h>
 
-#include "../Camera.h"
+#include "Camera.h"
+#include "Model.h"
+#include "Mesh.h"
 
 using namespace std;
 using namespace glm;
@@ -171,11 +173,7 @@ mat4 createLookAt(vec3 cameraPos, vec3 directionPoint, vec3 upWorldVector) {
 
 int main() {
 	//camara = Camera(cameraPosition, cameraDirectionPoint, 0'1, 60);
-	/*// Time Variables //
-	float oldTime = glfwGetTime();
-	float time = glfwGetTime();
-	float dt = time - oldTime;*/
-	//TODO
+
 	GLFWwindow* window;
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
@@ -186,7 +184,6 @@ int main() {
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
 	//create a window
-	//TODO
 	window = glfwCreateWindow(WIDTH, HEIGHT, "Finestra del projecte", nullptr, nullptr);
 
 	if (!window) {
@@ -196,41 +193,39 @@ int main() {
 	}
 	glfwMakeContextCurrent(window);
 	//set GLEW and inicializate
-	//TODO
 	glewExperimental = GL_TRUE;
 	if (GLEW_OK != glewInit()) {
 		cout << "Error al iniciar glew" << endl;
 		glfwTerminate();
 		return NULL;
 	}
-	//set function when callback
-	//TODO
-	//glfwSetKeyCallback(window, camera.DoMovement);
-
+	// Set inputs and callback
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 	//glfwGetCursorPos(window, &posX, &posY);
 	glfwSetScrollCallback(window, ScrollValues);
 
+	// If we want to move the camera with DoMovement
+	//glfwSetKeyCallback(window, camera.DoMovement);
 
-
-	//set windows and viewport
-	//TODO
-	int screenWithd, screenHeight;
-	glfwGetFramebufferSize(window, &screenWithd, &screenHeight);
-	//fondo
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(0.6, 0.0, 0.0, 1.0);
-	//TODO
-
-
+	// Set OpenGl depth for 3D
+	glEnable(GL_DEPTH_TEST);
 
 	//cargamos los shader
 	//Shader shdr("./src/textureVertexShader.vertexshader", "./src/TextureFragment.fragmentshader");
 	Shader shdr("./src/CubeVertexShader.vertexshader", "./src/CubeFragmentShader.fragmentshader");
 
-	// Definir el buffer de vertices
+	// Load the model
+	Model ourModel("./Models/spider/spider.obj");
 
+	//set windows and viewport
+	int screenWithd, screenHeight;
+	glfwGetFramebufferSize(window, &screenWithd, &screenHeight);
+	//fondo
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.6, 0.0, 0.0, 1.0);
+
+	// Definir el buffer de vertices
 	GLfloat VertexBufferObject[] = {
 		// Positions          // Colors           // Texture Coords
 		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f, // Top Right
@@ -282,8 +277,8 @@ int main() {
 		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
+	
 	// Definir el EBO
-
 	GLuint IndexBufferObject[]{
 		0, 1, 3,
 		3, 1, 2
@@ -310,16 +305,11 @@ int main() {
 	glGenBuffers(Numbuffer, &VBO);
 	glGenBuffers(Numbuffer, &EBO);
 
-	//Establecer el objeto
-	//Declarar el VBO y el EBO
-
-
-
 	//Enlazar el buffer con openGL
 	glBindVertexArray(VAO);
 	
-	/*glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexBufferObject), VertexBufferObject, GL_STATIC_DRAW);*/
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(VertexBufferObject), VertexBufferObject, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(IndexBufferObject), IndexBufferObject, GL_STATIC_DRAW);
 
@@ -343,7 +333,6 @@ int main() {
 
 
 
-	glEnable(GL_DEPTH_TEST);
 
 	// Texture 1
 
@@ -395,12 +384,7 @@ int main() {
 	{
 		mat4 transformationMatrix, escalationMatrix, translationMatrix2, view, proj;
 
-		camara.DoMovement(window);
-	
-
-		//cout << time  << "		" << oldTime << "		" << dt << endl;
-
-		// Definir las matrices de transformacion
+		/*// Definir las matrices de transformacion
 		//escalationMatrix = scale(escalationMatrix, vec3(0.5f, 0.5f, 0.0f));
 		/*translationMatrix1 = translate(translationMatrix1, vec3(0.0f, -0.5f, 0.0f));
 		
@@ -409,7 +393,7 @@ int main() {
 		
 		model = translationMatrix1 * rotationMatrix * model;
 
-		translationMatrix2 = translate(translationMatrix2, vec3(0.0, 0.0f, -0.3f));*/
+		translationMatrix2 = translate(translationMatrix2, vec3(0.0, 0.0f, -0.3f));
 
 		// PROVA --------------------------
 		/*	time = glfwGetTime();
@@ -434,19 +418,20 @@ int main() {
 
 		lastPosX = posX;
 		lastPosY = posY;*/
-		view = camara.LookAt();
-		//view = createLookAt(cameraPosition, cameraDirectionPoint, vec3(0.0, 1.0, .0));
-		proj = perspective(camara.GetFOV(), 800.0f / 600.0f, 0.1f, 100.f);
+
 
 
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwSetKeyCallback(window, key_callback);
+		camara.DoMovement(window);
+
 		//Establecer el color de fondo
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClearColor(1.0, 1.0, 0.0, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//establecer el shader
-		glActiveTexture(GL_TEXTURE0);
+		/*glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glUniform1i(glGetUniformLocation(shdr.Program, "Texture1"), 0);
 		glActiveTexture(GL_TEXTURE1);
@@ -457,7 +442,9 @@ int main() {
 		//glUniform1f(variableShader, 0.4 * abs(sin(glfwGetTime())));
 		glUniform1f(variableFade, fadeValue);
 		//pitar el VAO
-		glBindVertexArray(VAO); 
+		glBindVertexArray(VAO); */
+		
+		/*// Automatic rotation
 		automaticRotation = glfwGetTime() * 50;
 			for (int i = 0; i < 10; i++) {
 				mat4 translationMatrix1, rotationMatrix;
@@ -478,7 +465,7 @@ int main() {
 				glUniformMatrix4fv(glGetUniformLocation(shdr.Program, "model"), 1, GL_FALSE, value_ptr(model));
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 				glDrawArrays(GL_TRIANGLES, 0, 36);
-			}
+			}*/
 		
 		//pintar con lineas
 		/*if (WIDEFRAME) {
@@ -494,15 +481,25 @@ int main() {
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}*/
 
-		//glUniformMatrix4fv(uniModel, 1, GL_FALSE, value_ptr(model));
+		shdr.USE();
+
+		// Transformation
+		view = camara.LookAt();
+		proj = perspective(camara.GetFOV(), 800.0f / 600.0f, 0.1f, 100.f);
 		glUniformMatrix4fv(uniView, 1, GL_FALSE, value_ptr(view));
 		glUniformMatrix4fv(uniProj, 1, GL_FALSE, value_ptr(proj));
 
-		glBindVertexArray(0);
+		// Model and draw
+		mat4 model;
+		model = translate(model, vec3(-5.0f, -1.75f, 0.0f));
+		model = scale(model, vec3(0.2f));
+		glUniformMatrix4fv(glGetUniformLocation(shdr.Program, "model"), 1, GL_FALSE, value_ptr(model));
+		ourModel.Draw(shdr, GL_TRIANGLES);
+
+		//glBindVertexArray(0);
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//oldTime = time;
 	}

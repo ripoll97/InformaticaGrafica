@@ -16,10 +16,9 @@ uniform mat4 view;
 uniform mat4 proj;
 
 void main(){
+
 Color = color;
 Texcoord = texCoord;
-gl_Position = proj * view * model * vec4(position, 1.0);
+gl_Position = proj * view * model * vec4(position, 1.0f);
 
-
-//color = mix(texture(Texture1, TexCoord), texture(Texture2, TexCoord), 0.2);
 }

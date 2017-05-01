@@ -10,9 +10,27 @@ Camera::Camera(vec3 position, vec3 direction, GLfloat sensibility2, GLfloat fov)
 };
 
 mat4 Camera::LookAt() {
-		cout << FOV << endl;
+	//return lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
-	return lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	vec3 rightVec = normalize(cross(cameraFront, vec3(0.0, 1.0, 0.0)));
+	vec3 upVec = cross(cameraFront, rightVec);
+
+		
+	mat4 lookAtMat(
+			rightVec.x, upVec.x, -cameraFront.x, 0,
+			rightVec.y, upVec.y, -cameraFront.y, 0,
+			rightVec.z, upVec.z, -cameraFront.z, 0,
+			0, 0, 0, 1
+		);
+
+	mat4 positionMat(
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		-(cameraPos.x), -(cameraPos.y), -(cameraPos.z), 1
+	);
+
+	return lookAtMat * positionMat;
 }
 
 /*mat4 Camera::LookAt() {

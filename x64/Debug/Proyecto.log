@@ -1,0 +1,25 @@
+﻿  Shader.cpp
+  Model.cpp
+  Mesh.cpp
+c:\users\miquel\documents\github\informaticagrafica\src\mesh.cpp(52): warning C4244: 'argumento': conversión de 'GLuint' a 'GLfloat'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\mesh.cpp(59): warning C4267: 'argumento': conversión de 'size_t' a 'GLsizei'; posible pérdida de datos
+  main.cpp
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(41): warning C4305: 'argumento': truncamiento de 'double' a 'GLfloat'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(55): warning C4305: '+=': truncamiento de 'double' a 'float'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(59): warning C4305: '-=': truncamiento de 'double' a 'float'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(226): warning C4305: 'argumento': truncamiento de 'double' a 'GLclampf'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(377): warning C4244: 'inicializando': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(447): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(450): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+  Camera.cpp
+c:\users\miquel\documents\github\informaticagrafica\src\camera.cpp(72): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\camera.cpp(91): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\camera.cpp(96): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\camera.cpp(97): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\camera.cpp(101): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\camera.cpp(102): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\camera.cpp(103): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\camera.cpp(104): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+c:\users\miquel\documents\github\informaticagrafica\src\camera.cpp(158): warning C4244: '-=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+  Generando código...
+LINK : fatal error LNK1104: no se puede abrir el archivo 'assimp.lib'

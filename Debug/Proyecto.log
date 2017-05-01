@@ -1,22 +1,8 @@
 ﻿  main.cpp
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(41): warning C4305: 'argumento': truncamiento de 'double' a 'GLfloat'
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(55): warning C4305: '+=': truncamiento de 'double' a 'float'
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(59): warning C4305: '-=': truncamiento de 'double' a 'float'
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(223): warning C4305: 'argumento': truncamiento de 'double' a 'GLclampf'
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(388): warning C4244: 'inicializando': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(458): warning C4244: 'argumento': conversión de 'GLfloat' a 'GLint'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(461): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
-  Camera.cpp
-c:\users\miquel\documents\github\informaticagrafica\camera.cpp(54): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\camera.cpp(73): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\camera.cpp(78): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\camera.cpp(79): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\camera.cpp(83): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\camera.cpp(84): warning C4244: 'inicializando': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\camera.cpp(85): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\camera.cpp(86): warning C4244: '=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-c:\users\miquel\documents\github\informaticagrafica\camera.cpp(140): warning C4244: '-=': conversión de 'double' a 'GLfloat'; posible pérdida de datos
-  Generando código...
-cl : Línea de comandos warning D9028: error de recompilación mínimo, revirtiendo a la compilación normal
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(43): warning C4305: 'argumento': truncamiento de 'double' a 'GLfloat'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(57): warning C4305: '+=': truncamiento de 'double' a 'float'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(61): warning C4305: '-=': truncamiento de 'double' a 'float'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(226): warning C4305: 'argumento': truncamiento de 'double' a 'GLclampf'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(377): warning C4244: 'inicializando': conversión de 'GLint' a 'GLfloat'; posible pérdida de datos
   Proyecto.vcxproj -> C:\Users\Miquel\Documents\GitHub\InformaticaGrafica\Debug\Practica1.exe
   Proyecto.vcxproj -> C:\Users\Miquel\Documents\GitHub\InformaticaGrafica\Debug\Practica1.pdb (Full PDB)
