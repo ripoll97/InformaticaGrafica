@@ -30,6 +30,9 @@
     <ClCompile Include="src\Model.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="src\Object.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\SimpleVertexShader.vertexshader">
@@ -50,6 +53,12 @@
     <None Include="src\CubeVertexShader.vertexshader">
       <Filter>Archivos de recursos</Filter>
     </None>
+    <None Include="src\Light1.fragmentshader">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="src\Light1.vertexshader">
+      <Filter>Archivos de recursos</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera.h">
@@ -62,6 +71,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="src\Model.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Object.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

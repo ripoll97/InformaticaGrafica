@@ -16,6 +16,7 @@
 #include "Camera.h"
 #include "Model.h"
 #include "Mesh.h"
+#include "Object.h"
 
 using namespace std;
 using namespace glm;
@@ -41,6 +42,7 @@ double posX = WIDTH / 2;
 double posY = HEIGHT / 2;
 
 Camera camara(cameraPosition, cameraDirectionPoint, 0.04, 45.0f);
+Object cubeObj(vec3(1.0f, 1.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 2.0f), cube);
 
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
@@ -156,23 +158,8 @@ mat4 createLookAt(vec3 cameraPos, vec3 directionPoint, vec3 upWorldVector) {
 	return lookAtMat * positionMat;
 }
 
-/*mat4 createLookAt2() {
-	vec3 directionVec, upVec, rightVec;
-	vec3 upWorld = { 0,1,0 };
-	mat4 lookAtMat;
-	directionVec = {0.0, 1.0, 0.0};
-	rightVec = { 8.0, 1.0, 2.0 };
-	upVec = {4.5, 0.7, 0.0};
-	return lookAtMat = {
-		rightVec.x, rightVec.y, rightVec.z, 0,
-		upVec.x, upVec.y, upVec.z, 0,
-		directionVec.x, directionVec.y, directionVec.z, 0,
-		0, 0, 0, 1
-	};
-}*/
-
 int main() {
-	//camara = Camera(cameraPosition, cameraDirectionPoint, 0'1, 60);
+	camara = Camera(cameraPosition, cameraDirectionPoint, 0'1, 60);
 
 	GLFWwindow* window;
 	if (!glfwInit())
@@ -192,6 +179,7 @@ int main() {
 		exit(EXIT_FAILURE);
 	}
 	glfwMakeContextCurrent(window);
+
 	//set GLEW and inicializate
 	glewExperimental = GL_TRUE;
 	if (GLEW_OK != glewInit()) {
@@ -199,31 +187,37 @@ int main() {
 		glfwTerminate();
 		return NULL;
 	}
-	// Set inputs and callback
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetCursorPosCallback(window, cursor_position_callback);
-	//glfwGetCursorPos(window, &posX, &posY);
-	glfwSetScrollCallback(window, ScrollValues);
-
-	// If we want to move the camera with DoMovement
-	//glfwSetKeyCallback(window, camera.DoMovement);
 
 	// Set OpenGl depth for 3D
 	glEnable(GL_DEPTH_TEST);
 
+	cubeObj.Start();
+
+	// Set inputs and callback
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPosCallback(window, cursor_position_callback);
+	glfwSetScrollCallback(window, ScrollValues);
+	// If we want to move the camera with DoMovement
+	//glfwSetKeyCallback(window, camera.DoMovement);
+
+
 	//cargamos los shader
 	//Shader shdr("./src/textureVertexShader.vertexshader", "./src/TextureFragment.fragmentshader");
-	Shader shdr("./src/CubeVertexShader.vertexshader", "./src/CubeFragmentShader.fragmentshader");
+	//Shader shdr("./src/CubeVertexShader.vertexshader", "./src/CubeFragmentShader.fragmentshader");
+	Shader shdrObj("./src/Light1.vertexshader", "./src/Light1.fragmentshader");
+
 
 	// Load the model
-	Model ourModel("./Models/spider/spider.obj");
+	//Model ourModel("./Models/spider/spider.obj");
 
 	//set windows and viewport
 	int screenWithd, screenHeight;
 	glfwGetFramebufferSize(window, &screenWithd, &screenHeight);
 	//fondo
 	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(0.6, 0.0, 0.0, 1.0);
+	glClearColor(1.0, 1.0, 1.0, 1.0);
+
+#if(false)
 
 	// Definir el buffer de vertices
 	GLfloat VertexBufferObject[] = {
@@ -331,9 +325,9 @@ int main() {
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(2);
 
+#endif
 
-
-
+#if(false)
 	// Texture 1
 
 	GLuint texture;
@@ -364,25 +358,25 @@ int main() {
 	image = SOIL_load_image("./src/InBread.png", &width, &height, 0, SOIL_LOAD_RGB);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 	SOIL_free_image_data(image);
-
+#endif
 
 	//liberar el buffer
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindVertexArray(0);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	//liberar el buffer de vertices
 
-	GLint variableShader = glGetUniformLocation(shdr.Program, "shaderVariable");
-	GLfloat variableFade = glGetUniformLocation(shdr.Program, "fade");
+	/* Variables to the shaders
+	//GLint variableShader = glGetUniformLocation(shdr.Program, "shaderVariable");
+	//GLfloat variableFade = glGetUniformLocation(shdr.Program, "fade");
 	//GLint uniModel = glGetUniformLocation(shdr.Program, "model");
-	GLint uniView = glGetUniformLocation(shdr.Program, "view");
-	GLint uniProj = glGetUniformLocation(shdr.Program, "proj");
+	//GLint uniView = glGetUniformLocation(shdr.Program, "view");
+	//GLint uniProj = glGetUniformLocation(shdr.Program, "proj");*/
 
 	//bucle de dibujado
 	while (!glfwWindowShouldClose(window))
 	{
-		mat4 transformationMatrix, escalationMatrix, translationMatrix2, view, proj;
+		mat4 transformationMatrix, escalationMatrix, translationMatrix2, view, proj, model;
 
 		/*// Definir las matrices de transformacion
 		//escalationMatrix = scale(escalationMatrix, vec3(0.5f, 0.5f, 0.0f));
@@ -427,7 +421,7 @@ int main() {
 
 		//Establecer el color de fondo
 		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(1.0, 1.0, 0.0, 1.0);
+		glClearColor(0.0, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//establecer el shader
@@ -481,22 +475,30 @@ int main() {
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}*/
 
-		shdr.USE();
+		cubeObj.Draw();
+
+		shdrObj.USE();
 
 		// Transformation
 		view = camara.LookAt();
 		proj = perspective(camara.GetFOV(), 800.0f / 600.0f, 0.1f, 100.f);
-		glUniformMatrix4fv(uniView, 1, GL_FALSE, value_ptr(view));
-		glUniformMatrix4fv(uniProj, 1, GL_FALSE, value_ptr(proj));
+		//model = cubeObj.GetModelMatrix();
+		//model = scale(model, vec3(1.5f));
+		//model = rotate(model, 10.0f, vec3(0.0f, 1.0f, 0.0f));
 
-		// Model and draw
+		glUniformMatrix4fv(glGetUniformLocation(shdrObj.Program, "view"), 1, GL_FALSE, value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(shdrObj.Program, "proj"), 1, GL_FALSE, value_ptr(proj));
+		glUniformMatrix4fv(glGetUniformLocation(shdrObj.Program, "model"), 1, GL_FALSE, value_ptr(cubeObj.GetModelMatrix()));
+		
+		/*// Model and draw
 		mat4 model;
 		model = translate(model, vec3(-5.0f, -1.75f, 0.0f));
 		model = scale(model, vec3(0.2f));
 		glUniformMatrix4fv(glGetUniformLocation(shdr.Program, "model"), 1, GL_FALSE, value_ptr(model));
-		ourModel.Draw(shdr, GL_TRIANGLES);
+		ourModel.Draw(shdr, GL_TRIANGLES);*/
 
 		//glBindVertexArray(0);
+
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -504,11 +506,12 @@ int main() {
 		//oldTime = time;
 	}
 	// liberar la memoria de los VAO, EBO y VBO
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
-	glDeleteTextures(1, &texture);
+	//glDeleteVertexArrays(1, &VAO);
+	//glDeleteBuffers(1, &VBO);
+	//glDeleteBuffers(1, &EBO);
+	//glDeleteTextures(1, &texture);
 	// Terminate GLFW, clearing any resources allocated by GLFW.
+	cubeObj.Delete();
 	exit(EXIT_SUCCESS);
 }
 /*

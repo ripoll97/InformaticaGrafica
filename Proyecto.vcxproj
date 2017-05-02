@@ -23,11 +23,14 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\CubeFragmentShader.fragmentshader" />
     <None Include="src\CubeVertexShader.vertexshader" />
+    <None Include="src\Light1.fragmentshader" />
+    <None Include="src\Light1.vertexshader" />
     <None Include="src\SimpleFragmentShader.fragmentshader" />
     <None Include="src\SimpleVertexShader.vertexshader" />
     <None Include="src\TextureFragment.fragmentshader" />
@@ -37,6 +40,7 @@
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\Model.h" />
+    <ClInclude Include="src\Object.h" />
     <ClInclude Include="src\Shader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
