@@ -1,8 +1,6 @@
 #include "Object.h"
 
 Object::Object(vec3 scale, vec3 rotation2, vec3 position2, FigureType typef) {
-
-
 	scalation = scale;
 	rotation = rotation2;
 	position = position2;
@@ -82,10 +80,9 @@ void Object::Draw() {
 	glBindVertexArray(0);
 }
 void Object::Move(vec3 translation) {
-
+	position = translation;
 }
 void Object::Rotate(vec3 rota) {
-
 }
 void Object::Scale(vec3 scal) {
 

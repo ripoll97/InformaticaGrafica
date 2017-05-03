@@ -29,7 +29,6 @@ mat4 Camera::LookAt() {
 		0, 0, 1, 0,
 		-(cameraPos.x), -(cameraPos.y), -(cameraPos.z), 1
 	);
-
 	return lookAtMat * positionMat;
 }
 
@@ -103,8 +102,8 @@ void Camera::MouseMove(GLFWwindow* window, double xpos, double ypos) {
 	lastMx = xpos;
 	lastMy = ypos;
 
-	xOffset *= sensibility;
-	yOffset *= sensibility;
+	xOffset *= 0.04;
+	yOffset *= 0.04;
 
 	YAW += xOffset;
 	PITCH += yOffset;

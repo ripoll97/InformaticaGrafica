@@ -31,7 +31,7 @@ private:
 	GLfloat lastFrame;
 	GLfloat lastMx = 400;
 	GLfloat lastMy = 300;
-	GLfloat sensibility;
+	GLfloat sensibility = 0.04;
 	GLboolean firstMouse;
 	GLfloat PITCH;
 	GLfloat YAW;

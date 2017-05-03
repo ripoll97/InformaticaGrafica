@@ -31,6 +31,8 @@
     <None Include="src\CubeVertexShader.vertexshader" />
     <None Include="src\Light1.fragmentshader" />
     <None Include="src\Light1.vertexshader" />
+    <None Include="src\Light2.fragmentshader" />
+    <None Include="src\Light2.vertexshader" />
     <None Include="src\SimpleFragmentShader.fragmentshader" />
     <None Include="src\SimpleVertexShader.vertexshader" />
     <None Include="src\TextureFragment.fragmentshader" />

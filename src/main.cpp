@@ -32,6 +32,7 @@ int automaticRotation;
 vec3 cameraPosition(0.0, 0.0, 5);
 vec3 cameraDirectionPoint;
 float cameraVelocity = 13.0f;
+GLfloat cameraSensibility = 0'04;
 
 float offsetX = 0;
 float offsetY = 0;
@@ -41,51 +42,61 @@ float lastPosY = HEIGHT / 2;
 double posX = WIDTH / 2;
 double posY = HEIGHT / 2;
 
-Camera camara(cameraPosition, cameraDirectionPoint, 0.04, 45.0f);
-Object cubeObj(vec3(1.0f, 1.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 2.0f), cube);
+// Ilumination variables
+vec3 lightPos(3.0f, -1.0f, 0.0f);
+vec3 objectColor(0.2, 0.5, 1.0);
+vec3 lightColor(1.0, 0.1, 0.3);
 
 
+Camera camara(cameraPosition, cameraDirectionPoint, cameraSensibility, 45.0f);
+Object cubeObj(vec3(1.0f, 1.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.5f), cube);
+Object lightCube(vec3(0.2f, 0.2f, 0.2f), vec3(1.0f, 1.0f, 1.0f), vec3(3.0f, -1.0f, 0.0f), cube);
+vec3 cubePosition(cubeObj.GetPosition());
+vec3 cubeRotation;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	//cuando se pulsa una tecla escape cerramos la aplicacion
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
-		cout << "Meelassa, campo" << endl;
 	}
-	if (key == GLFW_KEY_W && action == GLFW_PRESS) {
-		WIDEFRAME = !WIDEFRAME;
-	}
-	if (key == GLFW_KEY_1) {
-		if (fadeValue < 1)
-			fadeValue += 0.1;
-	}
-	if (key == GLFW_KEY_2) {
-		if (fadeValue > 0)
-			fadeValue -= 0.1;
-	}
+
 	if (key == GLFW_KEY_LEFT) {
-		rotationValue = (rotationValue + 3) % 360;
 	}
 	if (key == GLFW_KEY_RIGHT) {
-		rotationValue = (rotationValue - 3) % 360;
+	
 	}
 	if (key == GLFW_KEY_UP) {
-		rotationValueY = (rotationValueY + 3) % 360;
+	
 	}
 	if (key == GLFW_KEY_DOWN) {
-		rotationValueY = (rotationValueY - 3) % 360;
+	
 	}
-	/*if (key == GLFW_KEY_W) {
-		cameraPosition.z -= dt * cameraVelocity;
+
+	// Cube moves
+
+	if (key == GLFW_KEY_I) {
+		cubePosition.z += 0.1;
 	}
-	if (key == GLFW_KEY_S) {
-		cameraPosition.z += dt * cameraVelocity;
+
+	if (key == GLFW_KEY_K) {
+		cubePosition.z -= 0.1;
 	}
-	if (key == GLFW_KEY_A) {
-		cameraPosition.x -= dt * cameraVelocity;
+
+	if (key == GLFW_KEY_L) {
+		cubePosition.x += 0.1;
 	}
-	if (key == GLFW_KEY_D) {
-		cameraPosition.x += dt * cameraVelocity;
-	}*/
+
+	if (key == GLFW_KEY_J) {
+		cubePosition.x -= 0.1;
+	}
+
+	if (key == GLFW_KEY_O) {
+		cubePosition.y -= 0.1;
+	}
+
+	if (key == GLFW_KEY_U) {
+		cubePosition.y += 0.1;
+	}
+	cubeObj.Move(cubePosition);
 }
 
 void DoMovement(GLFWwindow* window, float dt) {
@@ -159,7 +170,7 @@ mat4 createLookAt(vec3 cameraPos, vec3 directionPoint, vec3 upWorldVector) {
 }
 
 int main() {
-	camara = Camera(cameraPosition, cameraDirectionPoint, 0'1, 60);
+	camara = Camera(cameraPosition, cameraDirectionPoint, cameraSensibility, 45);
 
 	GLFWwindow* window;
 	if (!glfwInit())
@@ -192,6 +203,7 @@ int main() {
 	glEnable(GL_DEPTH_TEST);
 
 	cubeObj.Start();
+	lightCube.Start();
 
 	// Set inputs and callback
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -203,9 +215,9 @@ int main() {
 
 	//cargamos los shader
 	//Shader shdr("./src/textureVertexShader.vertexshader", "./src/TextureFragment.fragmentshader");
-	//Shader shdr("./src/CubeVertexShader.vertexshader", "./src/CubeFragmentShader.fragmentshader");
+	//Shader shdrObj("./src/CubeVertexShader.vertexshader", "./src/CubeFragmentShader.fragmentshader");
 	Shader shdrObj("./src/Light1.vertexshader", "./src/Light1.fragmentshader");
-
+	Shader lightObj("./src/Light2.vertexshader", "./src/Light2.fragmentshader");
 
 	// Load the model
 	//Model ourModel("./Models/spider/spider.obj");
@@ -373,10 +385,12 @@ int main() {
 	//GLint uniView = glGetUniformLocation(shdr.Program, "view");
 	//GLint uniProj = glGetUniformLocation(shdr.Program, "proj");*/
 
-	//bucle de dibujado
+	GLint lightPosLoc = glGetUniformLocation(lightObj.Program, "lightPos");
+	glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
+
 	while (!glfwWindowShouldClose(window))
 	{
-		mat4 transformationMatrix, escalationMatrix, translationMatrix2, view, proj, model;
+		mat4 transformationMatrix, escalationMatrix, translationMatrix2, view, proj;
 
 		/*// Definir las matrices de transformacion
 		//escalationMatrix = scale(escalationMatrix, vec3(0.5f, 0.5f, 0.0f));
@@ -475,27 +489,33 @@ int main() {
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}*/
 
+		// BIG CUBE
 		cubeObj.Draw();
-
 		shdrObj.USE();
 
-		// Transformation
 		view = camara.LookAt();
 		proj = perspective(camara.GetFOV(), 800.0f / 600.0f, 0.1f, 100.f);
-		//model = cubeObj.GetModelMatrix();
-		//model = scale(model, vec3(1.5f));
-		//model = rotate(model, 10.0f, vec3(0.0f, 1.0f, 0.0f));
-
 		glUniformMatrix4fv(glGetUniformLocation(shdrObj.Program, "view"), 1, GL_FALSE, value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(shdrObj.Program, "proj"), 1, GL_FALSE, value_ptr(proj));
 		glUniformMatrix4fv(glGetUniformLocation(shdrObj.Program, "model"), 1, GL_FALSE, value_ptr(cubeObj.GetModelMatrix()));
-		
+		glUniform3f(glGetUniformLocation(shdrObj.Program, "objectColor"), objectColor.x, objectColor.y, objectColor.z);
+		glUniform3f(glGetUniformLocation(shdrObj.Program, "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+
+		// LIGHT CUBE
+		lightCube.Draw();
+		lightObj.USE();
+		//view = camara.LookAt();
+		//proj = perspective(camara.GetFOV(), 800.0f / 600.0f, 0.1f, 100.f);
+		glUniformMatrix4fv(glGetUniformLocation(lightObj.Program, "view"), 1, GL_FALSE, value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(lightObj.Program, "proj"), 1, GL_FALSE, value_ptr(proj));
+		glUniformMatrix4fv(glGetUniformLocation(lightObj.Program, "model2"), 1, GL_FALSE, value_ptr(lightCube.GetModelMatrix()));
+
 		/*// Model and draw
 		mat4 model;
 		model = translate(model, vec3(-5.0f, -1.75f, 0.0f));
 		model = scale(model, vec3(0.2f));
-		glUniformMatrix4fv(glGetUniformLocation(shdr.Program, "model"), 1, GL_FALSE, value_ptr(model));
-		ourModel.Draw(shdr, GL_TRIANGLES);*/
+		glUniformMatrix4fv(glGetUniformLocation(shdrObj.Program, "model"), 1, GL_FALSE, value_ptr(model));
+		ourModel.Draw(shdrObj, GL_TRIANGLES);*/
 
 		//glBindVertexArray(0);
 
@@ -512,6 +532,7 @@ int main() {
 	//glDeleteTextures(1, &texture);
 	// Terminate GLFW, clearing any resources allocated by GLFW.
 	cubeObj.Delete();
+	lightCube.Delete();
 	exit(EXIT_SUCCESS);
 }
 /*

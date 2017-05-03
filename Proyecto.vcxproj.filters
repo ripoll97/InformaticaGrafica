@@ -53,10 +53,16 @@
     <None Include="src\CubeVertexShader.vertexshader">
       <Filter>Archivos de recursos</Filter>
     </None>
-    <None Include="src\Light1.fragmentshader">
+    <None Include="src\Light1.vertexshader">
       <Filter>Archivos de recursos</Filter>
     </None>
-    <None Include="src\Light1.vertexshader">
+    <None Include="src\Light2.fragmentshader">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="src\Light2.vertexshader">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="src\Light1.fragmentshader">
       <Filter>Archivos de recursos</Filter>
     </None>
   </ItemGroup>
