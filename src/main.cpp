@@ -32,7 +32,7 @@ int automaticRotation;
 vec3 cameraPosition(0.0, 0.0, 5);
 vec3 cameraDirectionPoint;
 float cameraVelocity = 13.0f;
-GLfloat cameraSensibility = 0'04;
+GLfloat cameraSensibility = 0'02;
 
 float offsetX = 0;
 float offsetY = 0;
@@ -43,16 +43,16 @@ double posX = WIDTH / 2;
 double posY = HEIGHT / 2;
 
 // Ilumination variables
-vec3 lightPos(3.0f, -1.0f, 0.0f);
-vec3 objectColor(0.2, 0.5, 1.0);
-vec3 lightColor(1.0, 0.1, 0.3);
+vec3 lightPos(1.2f, 1.0f, 2.0f);
+vec3 objectColor(1.0f, 0.5f, 0.31f);
+vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 
 Camera camara(cameraPosition, cameraDirectionPoint, cameraSensibility, 45.0f);
 Object cubeObj(vec3(1.0f, 1.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.5f), cube);
 Object lightCube(vec3(0.2f, 0.2f, 0.2f), vec3(1.0f, 1.0f, 1.0f), vec3(3.0f, -1.0f, 0.0f), cube);
 vec3 cubePosition(cubeObj.GetPosition());
-vec3 cubeRotation;
+vec3 cubeRotation(0.0f);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	//cuando se pulsa una tecla escape cerramos la aplicacion
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
@@ -96,7 +96,21 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_U) {
 		cubePosition.y += 0.1;
 	}
+	if (key == GLFW_KEY_KP_6) {
+		cubeRotation.y -= 0.11;
+	}	
+	if (key == GLFW_KEY_KP_4) {
+		cubeRotation.y += 0.1;
+	}
+	if (key == GLFW_KEY_KP_8) {
+		cubeRotation.x += 0.1;
+	}
+	if (key == GLFW_KEY_KP_2) {
+		cubeRotation.x -= 0.1;
+	}
 	cubeObj.Move(cubePosition);
+	cubeObj.Rotate(cubeRotation);	
+
 }
 
 void DoMovement(GLFWwindow* window, float dt) {
@@ -385,8 +399,7 @@ int main() {
 	//GLint uniView = glGetUniformLocation(shdr.Program, "view");
 	//GLint uniProj = glGetUniformLocation(shdr.Program, "proj");*/
 
-	GLint lightPosLoc = glGetUniformLocation(lightObj.Program, "lightPos");
-	glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
+	
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -500,6 +513,8 @@ int main() {
 		glUniformMatrix4fv(glGetUniformLocation(shdrObj.Program, "model"), 1, GL_FALSE, value_ptr(cubeObj.GetModelMatrix()));
 		glUniform3f(glGetUniformLocation(shdrObj.Program, "objectColor"), objectColor.x, objectColor.y, objectColor.z);
 		glUniform3f(glGetUniformLocation(shdrObj.Program, "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+		glUniform3f(glGetUniformLocation(shdrObj.Program, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(glGetUniformLocation(shdrObj.Program, "viewPos"), camara.cameraPos.x, camara.cameraPos.y, camara.cameraPos.z);
 
 		// LIGHT CUBE
 		lightCube.Draw();

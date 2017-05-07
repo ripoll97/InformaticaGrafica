@@ -83,6 +83,7 @@ void Object::Move(vec3 translation) {
 	position = translation;
 }
 void Object::Rotate(vec3 rota) {
+	rotation = rota;
 }
 void Object::Scale(vec3 scal) {
 
@@ -91,7 +92,9 @@ void Object::Scale(vec3 scal) {
 mat4 Object::GetModelMatrix() {
 	mat4 model;
 	model = translate(model, this->position);
-	model = rotate(model, 0.0f, this->rotation);
+	model = rotate(model, rotation.x, vec3(1.0, 0.0, 0.0));
+	model = rotate(model, rotation.y, vec3(0.0, 1.0, 0.0));
+	model = rotate(model, rotation.z, vec3(0.0, 0.0, 1.0));
 	model = scale(model, scalation);
 	return model;
 }

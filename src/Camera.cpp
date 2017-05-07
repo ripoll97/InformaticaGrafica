@@ -29,6 +29,7 @@ mat4 Camera::LookAt() {
 		0, 0, 1, 0,
 		-(cameraPos.x), -(cameraPos.y), -(cameraPos.z), 1
 	);
+
 	return lookAtMat * positionMat;
 }
 
@@ -87,6 +88,13 @@ void Camera::DoMovement(GLFWwindow* window) {
 		cameraPos += normalize(cross(cameraFront, cameraUp)) * cameraVel * dt;
 		//cameraFront.x += dt * cameraVel;
 	}
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+		cameraPos.y -= cameraVel * dt;
+		//cameraFront.x += dt * cameraVel;
+	}	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+		cameraPos.y += cameraVel * dt;
+		//cameraFront.x += dt * cameraVel;
+	}
 	lastFrame = glfwGetTime();
 }
 
@@ -95,6 +103,8 @@ void Camera::MouseMove(GLFWwindow* window, double xpos, double ypos) {
 		lastMx = xpos;
 		lastMy = ypos;
 		firstMouse = false;
+		PITCH = 2;
+		YAW = 270;
 	}
 	
 	GLfloat xOffset = xpos - lastMx;

@@ -1,12 +1,14 @@
 ﻿  main.cpp
-c:\users\miquel\documents\github\informaticagrafica\src\camera.h(34): warning C4305: 'inicializando': truncamiento de 'double' a 'GLfloat'
+c:\users\miquel\documents\github\informaticagrafica\src\camera.h(35): warning C4305: 'inicializando': truncamiento de 'double' a 'GLfloat'
 c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(77): warning C4305: '+=': truncamiento de 'double' a 'float'
 c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(81): warning C4305: '-=': truncamiento de 'double' a 'float'
 c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(85): warning C4305: '+=': truncamiento de 'double' a 'float'
 c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(89): warning C4305: '-=': truncamiento de 'double' a 'float'
 c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(93): warning C4305: '-=': truncamiento de 'double' a 'float'
 c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(97): warning C4305: '+=': truncamiento de 'double' a 'float'
-  Object.cpp
-  Generando código...
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(100): warning C4305: '-=': truncamiento de 'double' a 'float'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(103): warning C4305: '+=': truncamiento de 'double' a 'float'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(106): warning C4305: '+=': truncamiento de 'double' a 'float'
+c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(109): warning C4305: '-=': truncamiento de 'double' a 'float'
   Proyecto.vcxproj -> C:\Users\Miquel\Documents\GitHub\InformaticaGrafica\Debug\Practica1.exe
   Proyecto.vcxproj -> C:\Users\Miquel\Documents\GitHub\InformaticaGrafica\Debug\Practica1.pdb (Full PDB)
