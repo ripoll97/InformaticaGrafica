@@ -33,6 +33,12 @@
     <None Include="src\Light1.vertexshader" />
     <None Include="src\Light2.fragmentshader" />
     <None Include="src\Light2.vertexshader" />
+    <None Include="src\Light_Directional.fragmentshader" />
+    <None Include="src\Light_Directional.vertexshader" />
+    <None Include="src\Light_Focal.fragmentshader" />
+    <None Include="src\Light_Focal.vertexshader" />
+    <None Include="src\Light_Point.fragmentshader" />
+    <None Include="src\Light_Point.vertexshader" />
     <None Include="src\SimpleFragmentShader.fragmentshader" />
     <None Include="src\SimpleVertexShader.vertexshader" />
     <None Include="src\TextureFragment.fragmentshader" />

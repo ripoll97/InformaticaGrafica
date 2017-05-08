@@ -65,6 +65,24 @@
     <None Include="src\Light1.fragmentshader">
       <Filter>Archivos de recursos</Filter>
     </None>
+    <None Include="src\Light_Directional.fragmentshader">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="src\Light_Directional.vertexshader">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="src\Light_Focal.fragmentshader">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="src\Light_Focal.vertexshader">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="src\Light_Point.fragmentshader">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="src\Light_Point.vertexshader">
+      <Filter>Archivos de recursos</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera.h">
