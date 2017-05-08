@@ -238,7 +238,8 @@ int main() {
 	// Directional Shader
 	Shader directionalShader("./src/Light_Directional.vertexshader", "./src/Light_Directional.fragmentshader");
 	Shader pointShader("./src/Light_Point.vertexshader", "./src/Light_Point.fragmentshader");
-
+	Shader spotLightShader("./src/Light_Focal.vertexshader", "./src/Light_Focal.fragmentshader");
+	
 	// Load the model
 	//Model ourModel("./Models/spider/spider.obj");
 
@@ -512,7 +513,8 @@ int main() {
 		cubeObj.Draw();
 		//shdrObj.USE();
 		//directionalShader.USE();
-		pointShader.USE();
+		//pointShader.USE();
+		spotLightShader.USE();
 
 		view = camara.LookAt();
 		proj = perspective(camara.GetFOV(), 800.0f / 600.0f, 0.1f, 100.f);
@@ -539,13 +541,23 @@ int main() {
 
 		// Point shader
 
-		glUniformMatrix4fv(glGetUniformLocation(pointShader.Program, "view"), 1, GL_FALSE, value_ptr(view));
+		/*glUniformMatrix4fv(glGetUniformLocation(pointShader.Program, "view"), 1, GL_FALSE, value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(pointShader.Program, "proj"), 1, GL_FALSE, value_ptr(proj));
 		glUniformMatrix4fv(glGetUniformLocation(pointShader.Program, "model"), 1, GL_FALSE, value_ptr(cubeObj.GetModelMatrix()));
 		glUniform3f(glGetUniformLocation(pointShader.Program, "objectColor"), objectColor.x, objectColor.y, objectColor.z);
 		glUniform3f(glGetUniformLocation(pointShader.Program, "lightColor"), lightColor.x, lightColor.y, lightColor.z);
 		glUniform3f(glGetUniformLocation(pointShader.Program, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-		glUniform3f(glGetUniformLocation(pointShader.Program, "viewPos"), camara.cameraPos.x, camara.cameraPos.y, camara.cameraPos.z);
+		glUniform3f(glGetUniformLocation(pointShader.Program, "viewPos"), camara.cameraPos.x, camara.cameraPos.y, camara.cameraPos.z);*/
+
+		// Spotlight shader
+
+		glUniformMatrix4fv(glGetUniformLocation(spotLightShader.Program, "view"), 1, GL_FALSE, value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(spotLightShader.Program, "proj"), 1, GL_FALSE, value_ptr(proj));
+		glUniformMatrix4fv(glGetUniformLocation(spotLightShader.Program, "model"), 1, GL_FALSE, value_ptr(cubeObj.GetModelMatrix()));
+		glUniform3f(glGetUniformLocation(spotLightShader.Program, "objectColor"), objectColor.x, objectColor.y, objectColor.z);
+		glUniform3f(glGetUniformLocation(spotLightShader.Program, "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+		glUniform3f(glGetUniformLocation(spotLightShader.Program, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(glGetUniformLocation(spotLightShader.Program, "viewPos"), camara.cameraPos.x, camara.cameraPos.y, camara.cameraPos.z);
 
 		// LIGHT CUBE
 		lightCube.Draw();
