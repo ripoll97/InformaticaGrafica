@@ -36,10 +36,14 @@ float d = length(lightPos - FragPos);
 float atenuation = 1.0 / (constant1 + constant2 * d + constant3 * (d * d));
 
 float theta = dot(lightDir, vec3(0.0, 1.0, 0.0));
-float phi = cos(radians(12.5f));
+float aperturaMax = cos(radians(20.0f));
+float aperturaMin = cos(radians(12.5f));
 
-if (theta > phi) {
-	vec3 result = atenuation * (ambient + diffuse + specular) * objectColor;
+float epsilon = aperturaMin - aperturaMax;
+float inte = clamp((theta - aperturaMax) / epsilon, 0.0, 1.0);
+
+if (theta > aperturaMax) {
+	vec3 result = atenuation * (ambient * objectColor + diffuse * inte * objectColor + specular * objectColor * inte);
 	color = vec4(result, 1.0);
 }
 
