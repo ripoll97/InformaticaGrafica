@@ -10,5 +10,6 @@ c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(101): warning C
 c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(104): warning C4305: '+=': truncamiento de 'double' a 'float'
 c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(107): warning C4305: '+=': truncamiento de 'double' a 'float'
 c:\users\miquel\documents\github\informaticagrafica\src\main.cpp(110): warning C4305: '-=': truncamiento de 'double' a 'float'
+cl : Línea de comandos warning D9028: error de recompilación mínimo, revirtiendo a la compilación normal
   Proyecto.vcxproj -> C:\Users\Miquel\Documents\GitHub\InformaticaGrafica\Debug\Practica1.exe
   Proyecto.vcxproj -> C:\Users\Miquel\Documents\GitHub\InformaticaGrafica\Debug\Practica1.pdb (Full PDB)

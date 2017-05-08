@@ -9,6 +9,11 @@ uniform vec3 viewPos;
 
 out vec4 color;
 
+// Constants for the atenuation
+float constant1 = 1.0;
+float constant2 = 0.22;
+float constant3 = 0.20;
+
 void main(){
 
 float ambientStrength = 0.2f;
@@ -26,7 +31,10 @@ vec3 reflectDir = reflect(-lightDir, normal);
 float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
 vec3 specular = specularStrength * spec * lightColor;
 
-vec3 result = (ambient + diffuse + specular) * objectColor;
+float d = length(lightPos - FragPos);
+float atenuation = 1.0 / (constant1 + constant2 * d + constant3 * (d * d));
+
+vec3 result = atenuation * (ambient + diffuse + specular) * objectColor;
 color = vec4(result, 1.0);
 
 }                                                                                                                                                                                                             
