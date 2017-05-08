@@ -43,14 +43,14 @@ double posX = WIDTH / 2;
 double posY = HEIGHT / 2;
 
 // Ilumination variables
-vec3 lightPos(1.2f, 1.0f, 2.0f);
+vec3 lightPos(3.0f, 0.0, 0.0f);
 vec3 objectColor(1.0f, 0.5f, 0.31f);
 vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 
 Camera camara(cameraPosition, cameraDirectionPoint, cameraSensibility, 45.0f);
 Object cubeObj(vec3(1.0f, 1.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.5f), cube);
-Object lightCube(vec3(0.2f, 0.2f, 0.2f), vec3(1.0f, 1.0f, 1.0f), vec3(3.0f, -1.0f, 0.0f), cube);
+Object lightCube(vec3(0.2f, 0.2f, 0.2f), vec3(1.0f, 1.0f, 1.0f), vec3(3.0f, 0.0, 0.0f), cube);
 vec3 cubePosition(cubeObj.GetPosition());
 vec3 cubeRotation(0.0f);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
@@ -218,7 +218,8 @@ int main() {
 
 	cubeObj.Start();
 	lightCube.Start();
-
+	cubeObj.Rotate(cubeRotation);
+	lightCube.Rotate(cubeRotation);
 	// Set inputs and callback
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
