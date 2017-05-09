@@ -17,6 +17,7 @@
 #include "Model.h"
 #include "Mesh.h"
 #include "Object.h"
+#include "material.h"
 
 using namespace std;
 using namespace glm;
@@ -49,10 +50,13 @@ vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 
 Camera camara(cameraPosition, cameraDirectionPoint, cameraSensibility, 45.0f);
+
 Object cubeObj(vec3(1.0f, 1.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f), vec3(0.0f, 0.0f, 0.5f), cube);
 Object lightCube(vec3(0.2f, 0.2f, 0.2f), vec3(1.0f, 1.0f, 1.0f), vec3(3.0f, 0.0, 0.0f), cube);
 vec3 cubePosition(cubeObj.GetPosition());
 vec3 cubeRotation(0.0f);
+
+Material material1("./src/difuso.png", "./src/especular.png", 0.5);
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	//cuando se pulsa una tecla escape cerramos la aplicacion
@@ -235,13 +239,15 @@ int main() {
 	Shader shdrObj("./src/Light1.vertexshader", "./src/Light1.fragmentshader");
 	Shader lightObj("./src/Light2.vertexshader", "./src/Light2.fragmentshader");
 
-	// Directional Shader
 	Shader directionalShader("./src/Light_Directional.vertexshader", "./src/Light_Directional.fragmentshader");
 	Shader pointShader("./src/Light_Point.vertexshader", "./src/Light_Point.fragmentshader");
 	Shader spotLightShader("./src/Light_Focal.vertexshader", "./src/Light_Focal.fragmentshader");
-	
+
+	Shader materialShader("./src/MaterialLight.vertexshader", "./src/MaterialLight.fragmentshader");
+
 	// Load the model
 	//Model ourModel("./Models/spider/spider.obj");
+	
 
 	//set windows and viewport
 	int screenWithd, screenHeight;
@@ -249,6 +255,8 @@ int main() {
 	//fondo
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
+
+	material1.ActivateTextures();
 
 #if(false)
 
@@ -514,7 +522,8 @@ int main() {
 		//shdrObj.USE();
 		//directionalShader.USE();
 		//pointShader.USE();
-		spotLightShader.USE();
+		//spotLightShader.USE();
+		materialShader.USE();
 
 		view = camara.LookAt();
 		proj = perspective(camara.GetFOV(), 800.0f / 600.0f, 0.1f, 100.f);
@@ -551,13 +560,24 @@ int main() {
 
 		// Spotlight shader
 
-		glUniformMatrix4fv(glGetUniformLocation(spotLightShader.Program, "view"), 1, GL_FALSE, value_ptr(view));
+		/*glUniformMatrix4fv(glGetUniformLocation(spotLightShader.Program, "view"), 1, GL_FALSE, value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(spotLightShader.Program, "proj"), 1, GL_FALSE, value_ptr(proj));
 		glUniformMatrix4fv(glGetUniformLocation(spotLightShader.Program, "model"), 1, GL_FALSE, value_ptr(cubeObj.GetModelMatrix()));
 		glUniform3f(glGetUniformLocation(spotLightShader.Program, "objectColor"), objectColor.x, objectColor.y, objectColor.z);
 		glUniform3f(glGetUniformLocation(spotLightShader.Program, "lightColor"), lightColor.x, lightColor.y, lightColor.z);
 		glUniform3f(glGetUniformLocation(spotLightShader.Program, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-		glUniform3f(glGetUniformLocation(spotLightShader.Program, "viewPos"), camara.cameraPos.x, camara.cameraPos.y, camara.cameraPos.z);
+		glUniform3f(glGetUniformLocation(spotLightShader.Program, "viewPos"), camara.cameraPos.x, camara.cameraPos.y, camara.cameraPos.z);*/
+
+		// Material shader
+
+		glUniformMatrix4fv(glGetUniformLocation(materialShader.Program, "view"), 1, GL_FALSE, value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(materialShader.Program, "proj"), 1, GL_FALSE, value_ptr(proj));
+		glUniformMatrix4fv(glGetUniformLocation(materialShader.Program, "model"), 1, GL_FALSE, value_ptr(cubeObj.GetModelMatrix()));
+		glUniform3f(glGetUniformLocation(materialShader.Program, "objectColor"), objectColor.x, objectColor.y, objectColor.z);
+		glUniform3f(glGetUniformLocation(materialShader.Program, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(glGetUniformLocation(materialShader.Program, "viewPos"), camara.cameraPos.x, camara.cameraPos.y, camara.cameraPos.z);
+		material1.SetMaterial(&materialShader);
+		material1.SetShininess(&materialShader);
 
 		// LIGHT CUBE
 		lightCube.Draw();

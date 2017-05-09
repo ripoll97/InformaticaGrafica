@@ -12,51 +12,49 @@ Object::~Object() {}
 
 void Object::Start() {
 	GLfloat VertexBufferObject[] = {
-		// Position			// Normals
 		//front
-		1.0f ,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
-		1.0f , -1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
-		1.0f ,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f,
+		//front
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+		0.5f ,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
 		//back
-		-1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-		1.0f , -1.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-		1.0f ,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-
-		1.0f ,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-		-1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-		-1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-		//left
-		-1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f,
-		-1.0f,  1.0f, -1.0f, -1.0f,  0.0f,  0.0f,
-		-1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f,
-		-1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f,
-		-1.0f, -1.0f,  1.0f, -1.0f,  0.0f,  0.0f,
-		-1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+		//left	
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 		//right
-		1.0f , -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,
-		1.0f ,  1.0f, -1.0f,  1.0f,  0.0f,  0.0f,
-		1.0f ,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f,
-
-		1.0f ,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f,
-		1.0f , -1.0f,  1.0f,  1.0f,  0.0f,  0.0f,
-		1.0f , -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
 		//down
-		-1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f,
-		1.0f , -1.0f, -1.0f,  0.0f, -1.0f,  0.0f,
-		1.0f , -1.0f,  1.0f,  0.0f, -1.0f,  0.0f,
-		1.0f , -1.0f,  1.0f,  0.0f, -1.0f,  0.0f,
-		-1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f,
-		-1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
 		//up
-		1.0f ,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-		1.0f ,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-		-1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-		-1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-		-1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-		1.0f ,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f
 	};
 
 	glGenBuffers(1, &VBO);
@@ -67,11 +65,14 @@ void Object::Start() {
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexBufferObject), VertexBufferObject, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
 }
 
 void Object::Draw() {

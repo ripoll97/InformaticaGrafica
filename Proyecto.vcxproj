@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Object.cpp" />
@@ -39,6 +40,8 @@
     <None Include="src\Light_Focal.vertexshader" />
     <None Include="src\Light_Point.fragmentshader" />
     <None Include="src\Light_Point.vertexshader" />
+    <None Include="src\MaterialLight.fragmentshader" />
+    <None Include="src\MaterialLight.vertexshader" />
     <None Include="src\SimpleFragmentShader.fragmentshader" />
     <None Include="src\SimpleVertexShader.vertexshader" />
     <None Include="src\TextureFragment.fragmentshader" />
@@ -46,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\material.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Object.h" />
